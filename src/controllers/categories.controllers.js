@@ -2,9 +2,7 @@ import { connection } from "../database/database.js";
 
 async function readCategories(req, res) {
     try {
-        const categories = await connection.query(
-            `SELECT * FROM categories;`
-        );
+        const categories = await connection.query(`SELECT * FROM categories;`);
         
         res.send(categories.rows);
 
