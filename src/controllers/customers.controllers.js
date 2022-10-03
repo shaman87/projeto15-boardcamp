@@ -22,6 +22,24 @@ async function readCustomers(req, res) {
     }
 }
 
+async function readCustomersId(req, res) {
+    const { id } = req.params;
+
+    try {
+        const customer = await connection.query(`SELECT * FROM customers WHERE id = $1;`, [id]);
+
+        if(!customer.rows[0]) {
+            return res.sendStatus(404);
+        }
+
+        return res.send(customer.rows[0]);
+
+    } catch(error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+}
+
 async function createCustomers(req, res) {
     const { name, phone, cpf, birthday } = res.locals.body;
 
@@ -44,4 +62,21 @@ async function createCustomers(req, res) {
     }
 }
 
-export { readCustomers, createCustomers };
+async function updateCustomers(req, res) {
+    const { id } = req.params;
+    const { name, phone, cpf, birthday } = res.locals.body;
+
+    try {
+        await connection.query(
+            `UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5`, [name, phone, cpf, birthday, id]
+        );
+
+        res.sendStatus(200);
+
+    } catch(error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+}
+
+export { readCustomers, readCustomersId, createCustomers, updateCustomers };
