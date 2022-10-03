@@ -2,17 +2,26 @@ import { connection } from "../database/database.js";
 
 async function readCustomers(req, res) {
     const { cpf } = res.locals;
+    let customers;
 
     try {
         if(!cpf) {
-            const customers = await connection.query(`SELECT * FROM customers;`);
+            customers = await connection.query(`SELECT * FROM customers;`);
             
+            customers.rows.forEach(customer => {
+                customer.birthday = customer.birthday.toISOString().substring(0, 10);
+            });
+
             return res.send(customers.rows);
         }
 
-        const customers = await connection.query(
+        customers = await connection.query(
             `SELECT * FROM customers WHERE cpf ILIKE $1 || '%';`, [cpf]
         );
+
+        customers.rows.forEach(customer => {
+            customer.birthday = customer.birthday.toISOString().substring(0, 10);
+        });
         
         return res.send(customers.rows);
 

@@ -43,7 +43,7 @@ async function readRentals(req, res) {
             rent.rentDate = rent.rentDate.toISOString().substring(0, 10);
         });
 
-        res.send(rentalsList.rows);
+        return res.send(rentalsList.rows);
 
     } catch(error) {
         console.error(error);

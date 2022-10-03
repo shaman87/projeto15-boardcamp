@@ -4,7 +4,7 @@ import { validateCreateCustomers, validateReadCustomers } from "../middlewares/c
 
 const router = Router();
 
-router.get("/customers/:id", readCustomersId);
+router.get("/customers/:id", validateReadCustomers, readCustomersId);
 router.get("/customers", validateReadCustomers, readCustomers);
 router.post("/customers", validateCreateCustomers, createCustomers);
 router.put("/customers/:id", validateCreateCustomers, updateCustomers);
