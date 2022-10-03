@@ -13,7 +13,7 @@ async function readCustomers(req, res) {
         const customers = await connection.query(
             `SELECT * FROM customers WHERE cpf ILIKE $1 || '%';`, [cpf]
         );
-
+        
         return res.send(customers.rows);
 
     } catch(error) {
